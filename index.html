@@ -46,6 +46,8 @@
             animation: spin 1s linear infinite;
         }
         @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+        .qris-modal { display: none; }
+        .qris-modal.active { display: flex; }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -55,7 +57,7 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3">
-                    <img src="logo.png" alt="Logo Pang-Pang Nusantara" class="h-16 w-auto object-contain drop-shadow-lg">
+                    <img src="logo.png" alt="logo.png" class="h-16 w-auto object-contain drop-shadow-lg">
                     <div>
                         <h1 class="text-2xl font-bold gradient-text">Pang-Pang Nusantara</h1>
                         <p class="text-xs text-gray-500 dark:text-gray-400">Emping Melinjo Premium</p>
@@ -178,7 +180,7 @@
             <div class="grid md:grid-cols-4 gap-12 mb-12">
                 <div class="col-span-2">
                     <div class="flex items-center space-x-3 mb-6">
-                        <img src="logo.png" alt="Logo Pang-Pang Nusantara" class="h-16 w-auto object-contain drop-shadow-lg">
+                        <img src="logo.png" alt="logo.png" class="h-16 w-auto object-contain drop-shadow-lg">
                         <div>
                             <h3 class="text-2xl font-bold">Pang-Pang Nusantara</h3>
                             <p class="text-gray-400 text-sm">Emping Melinjo Premium</p>
@@ -211,10 +213,6 @@
             </div>
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
                 <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2026 Pang-Pang Nusantara. All rights reserved.</p>
-                <div class="flex space-x-6 text-sm text-gray-400">
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
-                </div>
             </div>
         </div>
     </footer>
@@ -230,47 +228,162 @@
             <div id="cart-items" class="space-y-4 mb-6">
                 <p class="text-gray-500 text-center py-8">Keranjang masih kosong</p>
             </div>
-            <div id="cart-footer" class="border-t border-gray-200 dark:border-gray-700 pt-6 hidden">
-                <div class="flex justify-between mb-4 text-lg font-bold">
-                    <span>Total:</span><span id="cart-total">Rp 0</span>
+            
+            <!-- Voucher Section -->
+            <div id="voucher-section" class="hidden mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-xl">
+                <div class="flex space-x-2 mb-3">
+                    <input type="text" id="voucher-input" placeholder="Kode Voucher" 
+                           class="flex-1 px-4 py-2 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 uppercase">
+                    <button onclick="applyVoucher()" class="px-4 py-2 bg-primary-500 text-white rounded-lg font-semibold hover:bg-primary-600 transition-colors">
+                        Pakai
+                    </button>
                 </div>
-                <button onclick="checkoutWhatsApp()" class="w-full py-4 bg-green-500 text-white rounded-full font-bold hover:bg-green-600 transition-colors mb-3">
+                <div id="voucher-message" class="text-sm"></div>
+                <div id="applied-voucher" class="hidden mt-2 p-2 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg flex justify-between items-center">
+                    <span id="voucher-code-display"></span>
+                    <button onclick="removeVoucher()" class="text-red-500 hover:text-red-700"><i class="fas fa-times"></i></button>
+                </div>
+            </div>
+            
+            <div id="cart-footer" class="border-t border-gray-200 dark:border-gray-700 pt-6 hidden">
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between text-gray-600 dark:text-gray-400">
+                        <span>Subtotal:</span>
+                        <span id="cart-subtotal">Rp 0</span>
+                    </div>
+                    <div id="discount-row" class="hidden flex justify-between text-green-600 dark:text-green-400">
+                        <span>Diskon Voucher:</span>
+                        <span id="discount-amount">- Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-lg font-bold border-t border-gray-300 dark:border-gray-600 pt-2">
+                        <span>Total:</span>
+                        <span id="cart-total">Rp 0</span>
+                    </div>
+                </div>
+                <button onclick="showCheckoutForm()" class="w-full py-4 bg-green-500 text-white rounded-full font-bold hover:bg-green-600 transition-colors mb-3">
                     <i class="fab fa-whatsapp mr-2"></i>Checkout via WhatsApp
-                </button>
-                <button onclick="exportCart()" class="w-full py-4 border-2 border-primary-500 text-primary-600 dark:text-primary-400 rounded-full font-bold hover:bg-primary-50 dark:hover:bg-gray-700 transition-colors">
-                    <i class="fas fa-download mr-2"></i>Export Data
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Product Modal -->
-    <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-gray-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div id="modal-content" class="p-6"></div>
+    <!-- Checkout Form Modal -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-gray-800 rounded-3xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold">Form Pemesanan</h2>
+                    <button onclick="closeCheckoutForm()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"><i class="fas fa-times text-xl"></i></button>
+                </div>
+                
+                <form id="checkout-form" onsubmit="submitOrder(event)">
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Nama Pemesan *</label>
+                            <input type="text" id="customer-name" required
+                                   class="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                                   placeholder="Masukkan nama lengkap">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Nomor WhatsApp *</label>
+                            <input type="tel" id="customer-phone" required
+                                   class="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                                   placeholder="08xxxxxxxxxx">
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Alamat Pengiriman Lengkap *</label>
+                            <textarea id="customer-address" required rows="3"
+                                      class="w-full px-4 py-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700"
+                                      placeholder="Jalan, RT/RW, Kelurahan, Kecamatan, Kota, Kode Pos"></textarea>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-sm font-semibold mb-2">Metode Pembayaran *</label>
+                            <div class="space-y-2">
+                                <label class="flex items-center p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
+                                    <input type="radio" name="payment" value="QRIS" required 
+                                           class="mr-3" onchange="toggleQRIS()">
+                                    <span class="font-semibold">QRIS</span>
+                                </label>
+                                <label class="flex items-center p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer hover:border-primary-500 transition-colors">
+                                    <input type="radio" name="payment" value="BCA" required 
+                                           class="mr-3" onchange="toggleQRIS()">
+                                    <span class="font-semibold">Transfer BCA</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <!-- QRIS Image -->
+                        <div id="qris-section" class="hidden">
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg text-center">
+                                <img src="qris.jpeg" alt="QRIS Code" class="max-w-xs mx-auto rounded-lg shadow-lg mb-3">
+                                <p class="text-sm text-gray-600 dark:text-gray-400">Scan QRIS untuk pembayaran</p>
+                            </div>
+                        </div>
+                        
+                        <!-- BCA Info -->
+                        <div id="bca-section" class="hidden">
+                            <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                                <p class="font-semibold mb-2">Transfer BCA:</p>
+                                <p class="text-lg font-bold text-primary-600 dark:text-primary-400">2453500039</p>
+                                <p class="text-sm text-gray-600 dark:text-gray-400">AN TETI</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-4">
+                            <button type="submit" class="w-full py-4 bg-green-500 text-white rounded-full font-bold text-lg hover:bg-green-600 transition-colors">
+                                <i class="fab fa-whatsapp mr-2"></i>Kirim Pesanan
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
     <script>
-        // ✅ URL WEB APP SUDAH DIPASANG
+        // ===== KONFIGURASI =====
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwin_j-g1C45UdJ7cxGe3qHeeZS3NqZx6cDMTvSgNxjuV9XIC1ll0dyyrtvNn8bHwuqRQ/exec';
 
         let products = [];
         let cart = [];
         let currentFilter = 'all';
+        let appliedVoucher = null;
+        let vouchers = {};
 
-        // ===== LOAD PRODUK DARI GOOGLE SHEETS =====
+        // ===== LOAD PRODUK DENGAN CACHE =====
         async function loadProducts() {
             const loading = document.getElementById('loading');
             const filters = document.getElementById('filters');
             const grid = document.getElementById('products-grid');
-
+            
+            const cachedData = localStorage.getItem('pangpang_products');
+            const cacheTime = localStorage.getItem('pangpang_cache_time');
+            const now = Date.now();
+            
+            if (cachedData && cacheTime && (now - parseInt(cacheTime)) < 300000) {
+                products = JSON.parse(cachedData);
+                loading.classList.add('hidden');
+                filters.classList.remove('hidden');
+                filters.classList.add('flex');
+                grid.classList.remove('hidden');
+                renderProducts();
+            } else {
+                loading.classList.remove('hidden');
+                filters.classList.add('hidden');
+                grid.classList.add('hidden');
+            }
+            
             try {
                 const response = await fetch(`${WEB_APP_URL}?action=products`);
                 const result = await response.json();
-
+                
                 if (result.success && result.data && result.data.length > 0) {
                     products = result.data;
+                    localStorage.setItem('pangpang_products', JSON.stringify(products));
+                    localStorage.setItem('pangpang_cache_time', now.toString());
                     loading.classList.add('hidden');
                     filters.classList.remove('hidden');
                     filters.classList.add('flex');
@@ -280,12 +393,12 @@
                     throw new Error('No data');
                 }
             } catch (error) {
-                console.error('Error loading products:', error);
-                loading.classList.add('hidden');
-                filters.classList.remove('hidden');
-                filters.classList.add('flex');
-                grid.classList.remove('hidden');
-                grid.innerHTML = '<div class="col-span-3 text-center py-12"><p class="text-red-500 text-lg">Gagal memuat produk. Pastikan Google Sheet sudah diisi dan Web App di-deploy sebagai "Anyone".</p></div>';
+                console.error('Error:', error);
+                if (!cachedData) {
+                    loading.classList.add('hidden');
+                    grid.classList.remove('hidden');
+                    grid.innerHTML = '<div class="col-span-3 text-center py-12"><p class="text-red-500">Gagal memuat produk</p></div>';
+                }
             }
         }
 
@@ -320,13 +433,13 @@
             renderProducts();
         }
 
-        // ===== RENDER PRODUK =====
+        // ===== RENDER PRODUK (TANPA TOMBOL INFO) =====
         function renderProducts() {
             const grid = document.getElementById('products-grid');
             const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
 
             if (filtered.length === 0) {
-                grid.innerHTML = '<div class="col-span-3 text-center py-12"><p class="text-gray-500 text-lg">Belum ada produk di kategori ini</p></div>';
+                grid.innerHTML = '<div class="col-span-3 text-center py-12"><p class="text-gray-500">Belum ada produk</p></div>';
                 return;
             }
 
@@ -335,9 +448,6 @@
                     <div class="relative overflow-hidden h-64">
                         <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover transition-transform duration-500" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                         ${product.discountPrice ? `<div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">DISKON</div>` : ''}
-                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                            <button onclick="showProductDetail(${product.id})" class="px-6 py-3 bg-white text-gray-900 rounded-full font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Lihat Detail</button>
-                        </div>
                     </div>
                     <div class="p-6">
                         <h3 class="text-xl font-bold mb-2">${product.name}</h3>
@@ -350,68 +460,20 @@
                                 ` : `<p class="text-2xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.normalPrice)}</p>`}
                             </div>
                         </div>
-                        <div class="flex space-x-2">
-                            <button onclick="addToCart(${product.id})" class="flex-1 py-3 bg-primary-500 text-white rounded-full font-semibold hover:bg-primary-600 transition-colors">
-                                <i class="fas fa-cart-plus mr-2"></i>Tambah
-                            </button>
-                            <button onclick="showProductDetail(${product.id})" class="px-4 py-3 border-2 border-primary-500 text-primary-600 dark:text-primary-400 rounded-full font-semibold hover:bg-primary-50 dark:hover:bg-gray-700 transition-colors">
-                                <i class="fas fa-info"></i>
-                            </button>
-                        </div>
+                        <button onclick="addToCart(${product.id})" class="w-full py-3 bg-primary-500 text-white rounded-full font-semibold hover:bg-primary-600 transition-colors">
+                            <i class="fas fa-cart-plus mr-2"></i>Tambah ke Keranjang
+                        </button>
                     </div>
                 </div>
             `).join('');
         }
 
-        // ===== MODAL DETAIL =====
-        function showProductDetail(productId) {
-            const product = products.find(p => p.id === productId);
-            const modal = document.getElementById('product-modal');
-            const content = document.getElementById('modal-content');
-
-            content.innerHTML = `
-                <div class="relative">
-                    <button onclick="closeModal()" class="absolute right-0 top-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"><i class="fas fa-times text-xl"></i></button>
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover rounded-2xl mb-6" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
-                    <h2 class="text-3xl font-bold mb-2">${product.name}</h2>
-                    <p class="text-gray-600 dark:text-gray-400 mb-6">${product.description}</p>
-                    <div class="mb-6">
-                        <h3 class="font-bold mb-3">Pilihan Ukuran:</h3>
-                        <div class="grid grid-cols-3 gap-2">
-                            <button class="size-btn py-2 border-2 border-primary-500 rounded-lg font-semibold bg-primary-500 text-white">Kecil</button>
-                            <button class="size-btn py-2 border-2 border-primary-500 rounded-lg font-semibold hover:bg-primary-50 dark:hover:bg-gray-700">Sedang</button>
-                            <button class="size-btn py-2 border-2 border-primary-500 rounded-lg font-semibold hover:bg-primary-50 dark:hover:bg-gray-700">Besar</button>
-                        </div>
-                    </div>
-                    <div class="mb-6">
-                        <h3 class="font-bold mb-3">Pilihan Qty:</h3>
-                        <select class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
-                            <option>0,5 KG</option><option>1,0 KG</option><option>2,0 KG</option>
-                            <option>3,0 KG</option><option>4,0 KG</option><option>5,0 KG</option><option>10,0 KG</option>
-                        </select>
-                    </div>
-                    <div class="flex items-end justify-between mb-6">
-                        <div>
-                            ${product.discountPrice ? `
-                                <p class="text-gray-400 line-through">${formatRupiah(product.normalPrice)}</p>
-                                <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.discountPrice)}</p>
-                            ` : `<p class="text-3xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.normalPrice)}</p>`}
-                        </div>
-                    </div>
-                    <button onclick="addToCart(${product.id}); closeModal();" class="w-full py-4 bg-primary-500 text-white rounded-full font-bold text-lg hover:bg-primary-600 transition-colors">
-                        <i class="fas fa-cart-plus mr-2"></i>Tambah ke Keranjang
-                    </button>
-                </div>
-            `;
-            modal.classList.remove('hidden');
-        }
-        function closeModal() { document.getElementById('product-modal').classList.add('hidden'); }
-
-        // ===== CART =====
+        // ===== CART FUNCTIONS =====
         function toggleCart() {
             document.getElementById('cart-sidebar').classList.toggle('open');
             document.getElementById('cart-overlay').classList.toggle('hidden');
         }
+        
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
             const existing = cart.find(item => item.id === productId);
@@ -420,7 +482,9 @@
             updateCart();
             toggleCart();
         }
+        
         function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCart(); }
+        
         function updateQty(id, change) {
             const item = cart.find(i => i.id === id);
             if (item) {
@@ -429,17 +493,19 @@
                 else updateCart();
             }
         }
+        
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             const cartFooter = document.getElementById('cart-footer');
             const cartCount = document.getElementById('cart-count');
-            const cartTotal = document.getElementById('cart-total');
+            const voucherSection = document.getElementById('voucher-section');
+            
             const totalItems = cart.reduce((s, i) => s + i.qty, 0);
-            const totalPrice = cart.reduce((s, i) => s + ((i.discountPrice || i.normalPrice) * i.qty), 0);
-
+            
             if (cart.length === 0) {
                 cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Keranjang masih kosong</p>';
                 cartFooter.classList.add('hidden');
+                voucherSection.classList.add('hidden');
                 cartCount.classList.add('hidden');
             } else {
                 cartItems.innerHTML = cart.map(item => `
@@ -457,50 +523,150 @@
                         <button onclick="removeFromCart(${item.id})" class="text-red-500"><i class="fas fa-trash"></i></button>
                     </div>
                 `).join('');
+                
                 cartFooter.classList.remove('hidden');
+                voucherSection.classList.remove('hidden');
                 cartCount.textContent = totalItems;
                 cartCount.classList.remove('hidden');
-                cartTotal.textContent = formatRupiah(totalPrice);
+                calculateTotal();
             }
         }
 
-        // ===== CHECKOUT WHATSAPP =====
-        function checkoutWhatsApp() {
-            if (cart.length === 0) return;
-            let msg = 'Halo Pang-Pang Nusantara, saya ingin memesan:\n\n';
-            let total = 0;
-            cart.forEach(item => {
+        // ===== VOUCHER FUNCTIONS =====
+        async function applyVoucher() {
+            const input = document.getElementById('voucher-input');
+            const message = document.getElementById('voucher-message');
+            const code = input.value.trim().toUpperCase();
+            
+            if (!code) {
+                message.innerHTML = '<p class="text-red-500">Masukkan kode voucher</p>';
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${WEB_APP_URL}?action=validateVoucher&code=${code}`);
+                const result = await response.json();
+                
+                if (result.success && result.valid) {
+                    appliedVoucher = { code: result.kode, discount: result.potongan };
+                    message.innerHTML = '<p class="text-green-600"><i class="fas fa-check mr-2"></i>Voucher berhasil diterapkan!</p>';
+                    document.getElementById('applied-voucher').classList.remove('hidden');
+                    document.getElementById('voucher-code-display').textContent = `${code} (-${formatRupiah(result.potongan)})`;
+                    input.value = '';
+                    calculateTotal();
+                } else {
+                    message.innerHTML = '<p class="text-red-500"><i class="fas fa-times mr-2"></i>Voucher tidak valid</p>';
+                    appliedVoucher = null;
+                }
+            } catch (error) {
+                message.innerHTML = '<p class="text-red-500">Gagal memvalidasi voucher</p>';
+            }
+        }
+        
+        function removeVoucher() {
+            appliedVoucher = null;
+            document.getElementById('voucher-message').innerHTML = '';
+            document.getElementById('applied-voucher').classList.add('hidden');
+            calculateTotal();
+        }
+        
+        function calculateTotal() {
+            const subtotal = cart.reduce((sum, item) => {
                 const price = item.discountPrice || item.normalPrice;
-                const sub = price * item.qty;
-                total += sub;
-                msg += `• ${item.name}\n  ${item.qty}x ${formatRupiah(price)} = ${formatRupiah(sub)}\n\n`;
-            });
-            msg += `*Total: ${formatRupiah(total)}*`;
-            window.open(`https://wa.me/6287871086173?text=${encodeURIComponent(msg)}`, '_blank');
+                return sum + (price * item.qty);
+            }, 0);
+            
+            const discount = appliedVoucher ? appliedVoucher.discount : 0;
+            const total = subtotal - discount;
+            
+            document.getElementById('cart-subtotal').textContent = formatRupiah(subtotal);
+            document.getElementById('discount-amount').textContent = `- ${formatRupiah(discount)}`;
+            document.getElementById('cart-total').textContent = formatRupiah(total > 0 ? total : 0);
+            
+            if (discount > 0) {
+                document.getElementById('discount-row').classList.remove('hidden');
+            } else {
+                document.getElementById('discount-row').classList.add('hidden');
+            }
         }
 
-        // ===== EXPORT CSV =====
-        function exportCart() {
+        // ===== CHECKOUT FORM =====
+        function showCheckoutForm() {
             if (cart.length === 0) return;
-            let csv = 'Nama Produk,Harga Normal,Harga Diskon,Qty,Subtotal\n';
-            let total = 0;
+            toggleCart();
+            document.getElementById('checkout-modal').classList.remove('hidden');
+        }
+        
+        function closeCheckoutForm() {
+            document.getElementById('checkout-modal').classList.add('hidden');
+        }
+        
+        function toggleQRIS() {
+            const paymentMethod = document.querySelector('input[name="payment"]:checked');
+            if (paymentMethod) {
+                if (paymentMethod.value === 'QRIS') {
+                    document.getElementById('qris-section').classList.remove('hidden');
+                    document.getElementById('bca-section').classList.add('hidden');
+                } else {
+                    document.getElementById('qris-section').classList.add('hidden');
+                    document.getElementById('bca-section').classList.remove('hidden');
+                }
+            }
+        }
+        
+        function submitOrder(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('customer-name').value;
+            const phone = document.getElementById('customer-phone').value;
+            const address = document.getElementById('customer-address').value;
+            const paymentMethod = document.querySelector('input[name="payment"]:checked').value;
+            
+            let message = `*PESANAN BARU PANG-PANG NUSANTARA*\n\n`;
+            message += `*Data Pemesan:*\n`;
+            message += `Nama: ${name}\n`;
+            message += `No. WA: ${phone}\n`;
+            message += `Alamat: ${address}\n\n`;
+            
+            message += `*Detail Pesanan:*\n`;
+            let subtotal = 0;
             cart.forEach(item => {
                 const price = item.discountPrice || item.normalPrice;
-                const sub = price * item.qty;
-                total += sub;
-                csv += `"${item.name}",${item.normalPrice},${item.discountPrice||''},${item.qty},${sub}\n`;
+                const itemTotal = price * item.qty;
+                subtotal += itemTotal;
+                message += `${item.name}\n`;
+                message += `  ${item.qty}x ${formatRupiah(price)} = ${formatRupiah(itemTotal)}\n\n`;
             });
-            csv += `\nTotal,,,,${total}`;
-            const blob = new Blob([csv], { type: 'text/csv' });
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(blob);
-            a.download = `keranjang-pangpang-${new Date().toISOString().split('T')[0]}.csv`;
-            a.click();
+            
+            message += `Subtotal: ${formatRupiah(subtotal)}\n`;
+            
+            if (appliedVoucher) {
+                message += `Voucher: ${appliedVoucher.code} (-${formatRupiah(appliedVoucher.discount)})\n`;
+            }
+            
+            const total = subtotal - (appliedVoucher ? appliedVoucher.discount : 0);
+            message += `\n*Total: ${formatRupiah(total)}*\n\n`;
+            
+            message += `*Metode Pembayaran:* ${paymentMethod}\n`;
+            if (paymentMethod === 'QRIS') {
+                message += `(Scan QRIS yang ditampilkan)\n`;
+            } else {
+                message += `Transfer BCA: 2453500039 AN TETI\n`;
+            }
+            
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/6287871086173?text=${encodedMessage}`, '_blank');
+            
+            // Reset cart
+            cart = [];
+            appliedVoucher = null;
+            updateCart();
+            closeCheckoutForm();
         }
 
         // ===== INIT =====
         document.addEventListener('DOMContentLoaded', loadProducts);
-        document.getElementById('product-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
+        document.getElementById('cart-overlay').addEventListener('click', toggleCart);
     </script>
 </body>
 </html>
