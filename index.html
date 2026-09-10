@@ -12,21 +12,12 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Plus Jakarta Sans', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
                     colors: {
                         primary: {
-                            50: '#fef3c7',
-                            100: '#fde68a',
-                            200: '#fcd34d',
-                            300: '#fbbf24',
-                            400: '#f59e0b',
-                            500: '#d97706',
-                            600: '#b45309',
-                            700: '#92400e',
-                            800: '#78350f',
-                            900: '#451a03',
+                            50: '#fef3c7', 100: '#fde68a', 200: '#fcd34d',
+                            300: '#fbbf24', 400: '#f59e0b', 500: '#d97706',
+                            600: '#b45309', 700: '#92400e', 800: '#78350f', 900: '#451a03',
                         }
                     }
                 }
@@ -34,40 +25,27 @@
         }
     </script>
     <style>
-        .glass-effect {
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.8);
-        }
-        .dark .glass-effect {
-            background: rgba(17, 24, 39, 0.8);
-        }
-        .product-card:hover .product-image {
-            transform: scale(1.05);
-        }
+        .glass-effect { backdrop-filter: blur(10px); background: rgba(255, 255, 255, 0.8); }
+        .dark .glass-effect { background: rgba(17, 24, 39, 0.8); }
+        .product-card:hover .product-image { transform: scale(1.05); }
         .gradient-text {
             background: linear-gradient(135deg, #d97706 0%, #92400e 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .dark .gradient-text {
             background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
-        @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
+        @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+        .float-animation { animation: float 3s ease-in-out infinite; }
+        .cart-sidebar { transform: translateX(100%); transition: transform 0.3s ease-in-out; }
+        .cart-sidebar.open { transform: translateX(0); }
+        .loading-spinner {
+            border: 4px solid #f3f3f3; border-top: 4px solid #d97706;
+            border-radius: 50%; width: 50px; height: 50px;
+            animation: spin 1s linear infinite;
         }
-        .float-animation {
-            animation: float 3s ease-in-out infinite;
-        }
-        .cart-sidebar {
-            transform: translateX(100%);
-            transition: transform 0.3s ease-in-out;
-        }
-        .cart-sidebar.open {
-            transform: translateX(0);
-        }
+        @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
     </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
@@ -77,22 +55,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3">
-                    <!-- LOGO NAVBAR -->
-                    <img src="logo.png" 
-                         alt="logo.png" 
-                         class="h-16 w-auto object-contain drop-shadow-lg">
+                    <img src="logo.png" alt="Logo Pang-Pang Nusantara" class="h-16 w-auto object-contain drop-shadow-lg">
                     <div>
                         <h1 class="text-2xl font-bold gradient-text">Pang-Pang Nusantara</h1>
                         <p class="text-xs text-gray-500 dark:text-gray-400">Emping Melinjo Premium</p>
                     </div>
                 </div>
-                
                 <div class="flex items-center space-x-4">
                     <button onclick="toggleDarkMode()" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                         <i class="fas fa-sun hidden dark:block text-yellow-400 text-xl"></i>
                         <i class="fas fa-moon block dark:hidden text-gray-700 text-xl"></i>
                     </button>
-                    
                     <button onclick="toggleCart()" class="relative p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
                         <i class="fas fa-shopping-cart text-xl"></i>
                         <span id="cart-count" class="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
@@ -111,13 +84,12 @@
                         Produk Premium Kualitas Ekspor
                     </div>
                     <h1 class="text-5xl md:text-6xl font-bold leading-tight">
-                        Emping Melinjo <br>
-                        <span class="gradient-text">Autentik Nusantara</span>
+                        Emping Melinjo <br><span class="gradient-text">Autentik Nusantara</span>
                     </h1>
                     <p class="text-lg text-gray-600 dark:text-gray-300">
                         Nikmati kelezatan emping melinjo pilihan dengan kualitas terbaik. Tersedia dalam berbagai varian dan ukuran untuk memenuhi kebutuhan Anda.
                     </p>
-                    <div class="flex space-x-4">
+                    <div class="flex flex-wrap gap-4">
                         <a href="#products" class="px-8 py-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white rounded-full font-semibold hover:shadow-lg hover:scale-105 transition-all">
                             Lihat Produk
                         </a>
@@ -128,10 +100,7 @@
                 </div>
                 <div class="relative">
                     <div class="absolute inset-0 bg-gradient-to-r from-primary-400 to-primary-600 rounded-3xl transform rotate-3 opacity-20"></div>
-                    <!-- FOTO HERO -->
-                    <img src="hero.png" 
-                         alt="Emping Melinjo" 
-                         class="relative rounded-3xl shadow-2xl float-animation object-cover h-96 w-full">
+                    <img src="hero.png" alt="Emping Melinjo" class="relative rounded-3xl shadow-2xl float-animation object-cover h-96 w-full">
                 </div>
             </div>
         </div>
@@ -173,23 +142,21 @@
                 <p class="text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">Pilih varian emping melinjo favorit Anda dengan berbagai ukuran yang tersedia</p>
             </div>
 
+            <!-- Loading -->
+            <div id="loading" class="flex justify-center py-12">
+                <div class="loading-spinner"></div>
+                <p class="ml-4 text-gray-500">Memuat produk dari database...</p>
+            </div>
+
             <!-- Filters -->
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <button onclick="filterProducts('all')" class="filter-btn active px-6 py-2 rounded-full border-2 border-primary-500 bg-primary-500 text-white font-semibold transition-all">
-                    Semua
-                </button>
-                <button onclick="filterProducts('melinjo')" class="filter-btn px-6 py-2 rounded-full border-2 border-primary-500 text-primary-600 dark:text-primary-400 font-semibold hover:bg-primary-500 hover:text-white transition-all">
-                    Emping Melinjo
-                </button>
-                <button onclick="filterProducts('manis')" class="filter-btn px-6 py-2 rounded-full border-2 border-primary-500 text-primary-600 dark:text-primary-400 font-semibold hover:bg-primary-500 hover:text-white transition-all">
-                    Emping Manis
-                </button>
+            <div id="filters" class="hidden flex flex-wrap justify-center gap-4 mb-12">
+                <button onclick="filterProducts('all')" class="filter-btn active px-6 py-2 rounded-full border-2 border-primary-500 bg-primary-500 text-white font-semibold transition-all">Semua</button>
+                <button onclick="filterProducts('melinjo')" class="filter-btn px-6 py-2 rounded-full border-2 border-primary-500 text-primary-600 dark:text-primary-400 font-semibold hover:bg-primary-500 hover:text-white transition-all">Emping Melinjo</button>
+                <button onclick="filterProducts('manis')" class="filter-btn px-6 py-2 rounded-full border-2 border-primary-500 text-primary-600 dark:text-primary-400 font-semibold hover:bg-primary-500 hover:text-white transition-all">Emping Manis</button>
             </div>
 
             <!-- Products Grid -->
-            <div id="products-grid" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Products will be loaded here -->
-            </div>
+            <div id="products-grid" class="hidden grid md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
         </div>
     </section>
 
@@ -211,31 +178,19 @@
             <div class="grid md:grid-cols-4 gap-12 mb-12">
                 <div class="col-span-2">
                     <div class="flex items-center space-x-3 mb-6">
-                        <!-- LOGO FOOTER -->
-                        <img src="logo.png" 
-                             alt="logo.png" 
-                             class="h-16 w-auto object-contain drop-shadow-lg">
+                        <img src="logo.png" alt="Logo Pang-Pang Nusantara" class="h-16 w-auto object-contain drop-shadow-lg">
                         <div>
                             <h3 class="text-2xl font-bold">Pang-Pang Nusantara</h3>
                             <p class="text-gray-400 text-sm">Emping Melinjo Premium</p>
                         </div>
                     </div>
-                    <p class="text-gray-400 mb-6 max-w-md">
-                        Menyajikan emping melinjo berkualitas premium dengan cita rasa autentik Nusantara. Produk pilihan untuk keluarga Indonesia.
-                    </p>
+                    <p class="text-gray-400 mb-6 max-w-md">Menyajikan emping melinjo berkualitas premium dengan cita rasa autentik Nusantara. Produk pilihan untuk keluarga Indonesia.</p>
                     <div class="flex space-x-4">
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-500 transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-500 transition-colors">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-500 transition-colors">
-                            <i class="fab fa-tiktok"></i>
-                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-500 transition-colors"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-500 transition-colors"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-primary-500 transition-colors"><i class="fab fa-tiktok"></i></a>
                     </div>
                 </div>
-                
                 <div>
                     <h4 class="text-lg font-bold mb-6">Link Cepat</h4>
                     <ul class="space-y-3 text-gray-400">
@@ -245,30 +200,17 @@
                         <li><a href="#" class="hover:text-primary-400 transition-colors">Pengiriman</a></li>
                     </ul>
                 </div>
-                
                 <div>
                     <h4 class="text-lg font-bold mb-6">Kontak</h4>
                     <ul class="space-y-3 text-gray-400">
-                        <li class="flex items-center space-x-3">
-                            <i class="fas fa-phone text-primary-500"></i>
-                            <span>0878-7108-6173</span>
-                        </li>
-                        <li class="flex items-center space-x-3">
-                            <i class="fas fa-envelope text-primary-500"></i>
-                            <span>info@pangpangnusantara.com</span>
-                        </li>
-                        <li class="flex items-center space-x-3">
-                            <i class="fas fa-map-marker-alt text-primary-500"></i>
-                            <span>Indonesia</span>
-                        </li>
+                        <li class="flex items-center space-x-3"><i class="fas fa-phone text-primary-500"></i><span>0878-7108-6173</span></li>
+                        <li class="flex items-center space-x-3"><i class="fas fa-envelope text-primary-500"></i><span>info@pangpangnusantara.com</span></li>
+                        <li class="flex items-center space-x-3"><i class="fas fa-map-marker-alt text-primary-500"></i><span>Indonesia</span></li>
                     </ul>
                 </div>
             </div>
-            
             <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center">
-                <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                    © 2024 Pang-Pang Nusantara. All rights reserved.
-                </p>
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2026 Pang-Pang Nusantara. All rights reserved.</p>
                 <div class="flex space-x-6 text-sm text-gray-400">
                     <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
                     <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
@@ -283,19 +225,14 @@
         <div class="p-6">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold">Keranjang Belanja</h2>
-                <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
-                    <i class="fas fa-times text-xl"></i>
-                </button>
+                <button onclick="toggleCart()" class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"><i class="fas fa-times text-xl"></i></button>
             </div>
-            
             <div id="cart-items" class="space-y-4 mb-6">
                 <p class="text-gray-500 text-center py-8">Keranjang masih kosong</p>
             </div>
-            
             <div id="cart-footer" class="border-t border-gray-200 dark:border-gray-700 pt-6 hidden">
                 <div class="flex justify-between mb-4 text-lg font-bold">
-                    <span>Total:</span>
-                    <span id="cart-total">Rp 0</span>
+                    <span>Total:</span><span id="cart-total">Rp 0</span>
                 </div>
                 <button onclick="checkoutWhatsApp()" class="w-full py-4 bg-green-500 text-white rounded-full font-bold hover:bg-green-600 transition-colors mb-3">
                     <i class="fab fa-whatsapp mr-2"></i>Checkout via WhatsApp
@@ -310,66 +247,49 @@
     <!-- Product Modal -->
     <div id="product-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
         <div class="bg-white dark:bg-gray-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div id="modal-content" class="p-6">
-                <!-- Content will be loaded dynamically -->
-            </div>
+            <div id="modal-content" class="p-6"></div>
         </div>
     </div>
 
     <script>
-        // Sample products data
-        let products = [
-            {
-                id: 1,
-                name: 'EMPING MELINJO BASIC',
-                category: 'melinjo',
-                normalPrice: 70000,
-                discountPrice: 65000,
-                image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&h=400&fit=crop',
-                description: 'Emping melinjo basic dengan ketebalan standar'
-            },
-            {
-                id: 2,
-                name: 'EMPING MELINJO MEDIUM',
-                category: 'melinjo',
-                normalPrice: 85000,
-                discountPrice: 75000,
-                image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&h=400&fit=crop',
-                description: 'Emping melinjo medium dengan ketebalan sedang'
-            },
-            {
-                id: 3,
-                name: 'EMPING MELINJO SUPER TIPIS',
-                category: 'melinjo',
-                normalPrice: 150000,
-                discountPrice: 120000,
-                image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&h=400&fit=crop',
-                description: 'Emping melinjo super tipis premium quality'
-            },
-            {
-                id: 4,
-                name: 'EMPING MANIS',
-                category: 'manis',
-                normalPrice: 20000,
-                discountPrice: null,
-                image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&h=400&fit=crop',
-                description: 'Emping manis dengan rasa gurih dan manis'
-            },
-            {
-                id: 5,
-                name: 'EMPING MANIS PEDAS',
-                category: 'manis',
-                normalPrice: 20000,
-                discountPrice: null,
-                image: 'https://images.unsplash.com/photo-1606755962773-d324e0a13086?w=400&h=400&fit=crop',
-                description: 'Emping manis dengan sensasi pedas'
-            }
-        ];
+        // ✅ URL WEB APP SUDAH DIPASANG
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwin_j-g1C45UdJ7cxGe3qHeeZS3NqZx6cDMTvSgNxjuV9XIC1ll0dyyrtvNn8bHwuqRQ/exec';
 
+        let products = [];
         let cart = [];
         let currentFilter = 'all';
 
-        // Dark Mode Toggle
+        // ===== LOAD PRODUK DARI GOOGLE SHEETS =====
+        async function loadProducts() {
+            const loading = document.getElementById('loading');
+            const filters = document.getElementById('filters');
+            const grid = document.getElementById('products-grid');
+
+            try {
+                const response = await fetch(`${WEB_APP_URL}?action=products`);
+                const result = await response.json();
+
+                if (result.success && result.data && result.data.length > 0) {
+                    products = result.data;
+                    loading.classList.add('hidden');
+                    filters.classList.remove('hidden');
+                    filters.classList.add('flex');
+                    grid.classList.remove('hidden');
+                    renderProducts();
+                } else {
+                    throw new Error('No data');
+                }
+            } catch (error) {
+                console.error('Error loading products:', error);
+                loading.classList.add('hidden');
+                filters.classList.remove('hidden');
+                filters.classList.add('flex');
+                grid.classList.remove('hidden');
+                grid.innerHTML = '<div class="col-span-3 text-center py-12"><p class="text-red-500 text-lg">Gagal memuat produk. Pastikan Google Sheet sudah diisi dan Web App di-deploy sebagai "Anyone".</p></div>';
+            }
+        }
+
+        // ===== DARK MODE =====
         function toggleDarkMode() {
             if (document.documentElement.classList.contains('dark')) {
                 document.documentElement.classList.remove('dark');
@@ -379,18 +299,16 @@
                 localStorage.theme = 'dark';
             }
         }
-
-        // Check for saved theme preference
         if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
 
-        // Format Rupiah
+        // ===== FORMAT RUPIAH =====
         function formatRupiah(amount) {
             return 'Rp ' + amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
-        // Filter Products
+        // ===== FILTER =====
         function filterProducts(category) {
             currentFilter = category;
             document.querySelectorAll('.filter-btn').forEach(btn => {
@@ -402,24 +320,23 @@
             renderProducts();
         }
 
-        // Render Products
+        // ===== RENDER PRODUK =====
         function renderProducts() {
             const grid = document.getElementById('products-grid');
             const filtered = currentFilter === 'all' ? products : products.filter(p => p.category === currentFilter);
-            
+
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="col-span-3 text-center py-12"><p class="text-gray-500 text-lg">Belum ada produk di kategori ini</p></div>';
+                return;
+            }
+
             grid.innerHTML = filtered.map(product => `
                 <div class="product-card bg-white dark:bg-gray-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
                     <div class="relative overflow-hidden h-64">
-                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover transition-transform duration-500">
-                        ${product.discountPrice ? `
-                            <div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                                DISKON
-                            </div>
-                        ` : ''}
+                        <img src="${product.image}" alt="${product.name}" class="product-image w-full h-full object-cover transition-transform duration-500" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
+                        ${product.discountPrice ? `<div class="absolute top-4 left-4 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">DISKON</div>` : ''}
                         <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
-                            <button onclick="showProductDetail(${product.id})" class="px-6 py-3 bg-white text-gray-900 rounded-full font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">
-                                Lihat Detail
-                            </button>
+                            <button onclick="showProductDetail(${product.id})" class="px-6 py-3 bg-white text-gray-900 rounded-full font-semibold transform translate-y-4 group-hover:translate-y-0 transition-all duration-300">Lihat Detail</button>
                         </div>
                     </div>
                     <div class="p-6">
@@ -430,9 +347,7 @@
                                 ${product.discountPrice ? `
                                     <p class="text-gray-400 line-through text-sm">${formatRupiah(product.normalPrice)}</p>
                                     <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.discountPrice)}</p>
-                                ` : `
-                                    <p class="text-2xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.normalPrice)}</p>
-                                `}
+                                ` : `<p class="text-2xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.normalPrice)}</p>`}
                             </div>
                         </div>
                         <div class="flex space-x-2">
@@ -448,21 +363,18 @@
             `).join('');
         }
 
-        // Show Product Detail
+        // ===== MODAL DETAIL =====
         function showProductDetail(productId) {
             const product = products.find(p => p.id === productId);
             const modal = document.getElementById('product-modal');
             const content = document.getElementById('modal-content');
-            
+
             content.innerHTML = `
                 <div class="relative">
-                    <button onclick="closeModal()" class="absolute right-0 top-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full">
-                        <i class="fas fa-times text-xl"></i>
-                    </button>
-                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover rounded-2xl mb-6">
+                    <button onclick="closeModal()" class="absolute right-0 top-0 p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full"><i class="fas fa-times text-xl"></i></button>
+                    <img src="${product.image}" alt="${product.name}" class="w-full h-64 object-cover rounded-2xl mb-6" onerror="this.src='https://via.placeholder.com/400x400?text=No+Image'">
                     <h2 class="text-3xl font-bold mb-2">${product.name}</h2>
                     <p class="text-gray-600 dark:text-gray-400 mb-6">${product.description}</p>
-                    
                     <div class="mb-6">
                         <h3 class="font-bold mb-3">Pilihan Ukuran:</h3>
                         <div class="grid grid-cols-3 gap-2">
@@ -471,95 +383,60 @@
                             <button class="size-btn py-2 border-2 border-primary-500 rounded-lg font-semibold hover:bg-primary-50 dark:hover:bg-gray-700">Besar</button>
                         </div>
                     </div>
-                    
                     <div class="mb-6">
                         <h3 class="font-bold mb-3">Pilihan Qty:</h3>
                         <select class="w-full p-3 border-2 border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700">
-                            <option>0,5 KG</option>
-                            <option>1,0 KG</option>
-                            <option>2,0 KG</option>
-                            <option>3,0 KG</option>
-                            <option>4,0 KG</option>
-                            <option>5,0 KG</option>
-                            <option>10,0 KG</option>
+                            <option>0,5 KG</option><option>1,0 KG</option><option>2,0 KG</option>
+                            <option>3,0 KG</option><option>4,0 KG</option><option>5,0 KG</option><option>10,0 KG</option>
                         </select>
                     </div>
-                    
                     <div class="flex items-end justify-between mb-6">
                         <div>
                             ${product.discountPrice ? `
                                 <p class="text-gray-400 line-through">${formatRupiah(product.normalPrice)}</p>
                                 <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.discountPrice)}</p>
-                            ` : `
-                                <p class="text-3xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.normalPrice)}</p>
-                            `}
+                            ` : `<p class="text-3xl font-bold text-primary-600 dark:text-primary-400">${formatRupiah(product.normalPrice)}</p>`}
                         </div>
                     </div>
-                    
                     <button onclick="addToCart(${product.id}); closeModal();" class="w-full py-4 bg-primary-500 text-white rounded-full font-bold text-lg hover:bg-primary-600 transition-colors">
                         <i class="fas fa-cart-plus mr-2"></i>Tambah ke Keranjang
                     </button>
                 </div>
             `;
-            
             modal.classList.remove('hidden');
         }
+        function closeModal() { document.getElementById('product-modal').classList.add('hidden'); }
 
-        function closeModal() {
-            document.getElementById('product-modal').classList.add('hidden');
-        }
-
-        // Cart Functions
+        // ===== CART =====
         function toggleCart() {
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            sidebar.classList.toggle('open');
-            overlay.classList.toggle('hidden');
+            document.getElementById('cart-sidebar').classList.toggle('open');
+            document.getElementById('cart-overlay').classList.toggle('hidden');
         }
-
         function addToCart(productId) {
             const product = products.find(p => p.id === productId);
-            const existingItem = cart.find(item => item.id === productId);
-            
-            if (existingItem) {
-                existingItem.qty++;
-            } else {
-                cart.push({ ...product, qty: 1 });
-            }
-            
+            const existing = cart.find(item => item.id === productId);
+            if (existing) existing.qty++;
+            else cart.push({ ...product, qty: 1 });
             updateCart();
             toggleCart();
         }
-
-        function removeFromCart(productId) {
-            cart = cart.filter(item => item.id !== productId);
-            updateCart();
-        }
-
-        function updateQty(productId, change) {
-            const item = cart.find(item => item.id === productId);
+        function removeFromCart(id) { cart = cart.filter(i => i.id !== id); updateCart(); }
+        function updateQty(id, change) {
+            const item = cart.find(i => i.id === id);
             if (item) {
                 item.qty += change;
-                if (item.qty <= 0) {
-                    removeFromCart(productId);
-                } else {
-                    updateCart();
-                }
+                if (item.qty <= 0) removeFromCart(id);
+                else updateCart();
             }
         }
-
         function updateCart() {
             const cartItems = document.getElementById('cart-items');
             const cartFooter = document.getElementById('cart-footer');
             const cartCount = document.getElementById('cart-count');
             const cartTotal = document.getElementById('cart-total');
-            
-            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-            const totalPrice = cart.reduce((sum, item) => {
-                const price = item.discountPrice || item.normalPrice;
-                return sum + (price * item.qty);
-            }, 0);
-            
+            const totalItems = cart.reduce((s, i) => s + i.qty, 0);
+            const totalPrice = cart.reduce((s, i) => s + ((i.discountPrice || i.normalPrice) * i.qty), 0);
+
             if (cart.length === 0) {
                 cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Keranjang masih kosong</p>';
                 cartFooter.classList.add('hidden');
@@ -567,26 +444,19 @@
             } else {
                 cartItems.innerHTML = cart.map(item => `
                     <div class="flex items-center space-x-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-xl">
-                        <img src="${item.image}" alt="${item.name}" class="w-20 h-20 object-cover rounded-lg">
+                        <img src="${item.image}" class="w-20 h-20 object-cover rounded-lg" onerror="this.src='https://via.placeholder.com/80?text=No'">
                         <div class="flex-1">
                             <h4 class="font-bold text-sm mb-1">${item.name}</h4>
                             <p class="text-primary-600 dark:text-primary-400 font-bold">${formatRupiah(item.discountPrice || item.normalPrice)}</p>
                             <div class="flex items-center mt-2 space-x-2">
-                                <button onclick="updateQty(${item.id}, -1)" class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500">
-                                    <i class="fas fa-minus text-xs"></i>
-                                </button>
+                                <button onclick="updateQty(${item.id},-1)" class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><i class="fas fa-minus text-xs"></i></button>
                                 <span class="font-semibold w-8 text-center">${item.qty}</span>
-                                <button onclick="updateQty(${item.id}, 1)" class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center hover:bg-gray-300 dark:hover:bg-gray-500">
-                                    <i class="fas fa-plus text-xs"></i>
-                                </button>
+                                <button onclick="updateQty(${item.id},1)" class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center"><i class="fas fa-plus text-xs"></i></button>
                             </div>
                         </div>
-                        <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-600">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <button onclick="removeFromCart(${item.id})" class="text-red-500"><i class="fas fa-trash"></i></button>
                     </div>
                 `).join('');
-                
                 cartFooter.classList.remove('hidden');
                 cartCount.textContent = totalItems;
                 cartCount.classList.remove('hidden');
@@ -594,62 +464,43 @@
             }
         }
 
+        // ===== CHECKOUT WHATSAPP =====
         function checkoutWhatsApp() {
             if (cart.length === 0) return;
-            
-            let message = 'Halo, saya ingin memesan:\n\n';
+            let msg = 'Halo Pang-Pang Nusantara, saya ingin memesan:\n\n';
             let total = 0;
-            
             cart.forEach(item => {
                 const price = item.discountPrice || item.normalPrice;
-                const subtotal = price * item.qty;
-                total += subtotal;
-                message += `${item.name}\n`;
-                message += `Qty: ${item.qty} x ${formatRupiah(price)}\n`;
-                message += `Subtotal: ${formatRupiah(subtotal)}\n\n`;
+                const sub = price * item.qty;
+                total += sub;
+                msg += `• ${item.name}\n  ${item.qty}x ${formatRupiah(price)} = ${formatRupiah(sub)}\n\n`;
             });
-            
-            message += `Total: ${formatRupiah(total)}`;
-            
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/6287871086173?text=${encodedMessage}`, '_blank');
+            msg += `*Total: ${formatRupiah(total)}*`;
+            window.open(`https://wa.me/6287871086173?text=${encodeURIComponent(msg)}`, '_blank');
         }
 
+        // ===== EXPORT CSV =====
         function exportCart() {
             if (cart.length === 0) return;
-            
             let csv = 'Nama Produk,Harga Normal,Harga Diskon,Qty,Subtotal\n';
-            
+            let total = 0;
             cart.forEach(item => {
                 const price = item.discountPrice || item.normalPrice;
-                const subtotal = price * item.qty;
-                csv += `${item.name},${item.normalPrice},${item.discountPrice || ''},${item.qty},${subtotal}\n`;
+                const sub = price * item.qty;
+                total += sub;
+                csv += `"${item.name}",${item.normalPrice},${item.discountPrice||''},${item.qty},${sub}\n`;
             });
-            
-            const total = cart.reduce((sum, item) => {
-                const price = item.discountPrice || item.normalPrice;
-                return sum + (price * item.qty);
-            }, 0);
-            
-            csv += `\nTotal,,,${total}`;
-            
+            csv += `\nTotal,,,,${total}`;
             const blob = new Blob([csv], { type: 'text/csv' });
-            const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
+            a.href = URL.createObjectURL(blob);
             a.download = `keranjang-pangpang-${new Date().toISOString().split('T')[0]}.csv`;
             a.click();
         }
 
-        // Initialize
-        document.addEventListener('DOMContentLoaded', () => {
-            renderProducts();
-        });
-
-        // Close modal on outside click
-        document.getElementById('product-modal').addEventListener('click', function(e) {
-            if (e.target === this) closeModal();
-        });
+        // ===== INIT =====
+        document.addEventListener('DOMContentLoaded', loadProducts);
+        document.getElementById('product-modal').addEventListener('click', function(e) { if (e.target === this) closeModal(); });
     </script>
 </body>
 </html>
